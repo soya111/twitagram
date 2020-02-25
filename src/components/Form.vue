@@ -1,20 +1,34 @@
 <template>
   <div>
-    <!--フォームの表示ボタン-->
-    <v-btn color="blue" dark right centered @click="showCreateForm">
-      <v-icon dark>mdi-plus</v-icon>
-      <v-icon>comment</v-icon>
-    </v-btn>
-    <v-dialog v-model="displayForm" max-width="500px">
-      <!--コメント入力フォーム-->
+    <v-dialog v-model="displayForm" max-width="600px">
+      <template v-slot:activator="{ on }">
+        <v-btn color="secondary" dark v-on="on">Tweet</v-btn>
+      </template>
       <v-card>
-        <v-container>
-          <h2>コメント追加</h2>
-          <v-form ref="form" v-model="valid" lazy-validation>
-            <v-text-field v-model="inputComment" :rules="commentRules" label="コメント" required></v-text-field>
-            <v-btn class="info" :disabled="!valid" @click="addComment">投稿する</v-btn>
-          </v-form>
-        </v-container>
+        <v-card-title>
+          <span class="headline">Tweet</span>
+        </v-card-title>
+        <v-card-text>
+          <v-container>
+            <v-row>
+              <v-col cols="12">
+                <v-form ref="form" v-model="valid" lazy-validation>
+                  <v-text-field
+                    v-model="inputComment"
+                    :rules="commentRules"
+                    label="Content"
+                    required
+                  ></v-text-field>
+                </v-form>
+              </v-col>
+            </v-row>
+          </v-container>
+        </v-card-text>
+        <v-card-actions>
+          <v-spacer></v-spacer>
+          <v-btn color="blue darken-1" text @click="hideCreateForm">Close</v-btn>
+          <v-btn color="blue darken-1" :disabled="!valid" @click="addComment" text>Comment!</v-btn>
+        </v-card-actions>
       </v-card>
     </v-dialog>
   </div>
@@ -45,6 +59,7 @@ export default {
           "https://i.picsum.photos/id/" +
           (Math.floor(Math.random() * 1083) + 1) +
           "/200/200.jpg",
+        likes: 0,
         createdAt: now
       });
       // ダイアログを閉じる
