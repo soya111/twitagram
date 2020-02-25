@@ -7,11 +7,21 @@
         </v-list-item-avatar>
 
         <v-list-item-content>
-          <v-list-item-subtitle class="text--primary subheading">{{comment.content}}</v-list-item-subtitle>
-          <v-list-item-subtitle>
-            {{comment.createdAt.toDate().toLocaleString()}}
-            <v-icon color="red" @click="deleteComment(comment.id)" small>delete</v-icon>
-          </v-list-item-subtitle>
+          <v-list-item-subtitle class="text--primary subtitle-1">{{comment.content}}</v-list-item-subtitle>
+          <v-list-item-subtitle>{{comment.createdAt.toDate().toLocaleString()}}</v-list-item-subtitle>
+          <!-- <v-row> -->
+          <v-col cols="12" sm="3">
+            <v-btn text icon color="pink" @click="likeComment(comment.id)">
+              <v-icon>mdi-heart</v-icon>
+            </v-btn>
+            {{comment.likes}}
+          </v-col>
+          <v-col cols="12" sm="3">
+            <v-btn text icon color="navy" @click="deleteComment(comment.id)">
+              <v-icon>mdi-delete</v-icon>
+            </v-btn>
+          </v-col>
+          <!-- </v-row> -->
         </v-list-item-content>
 
         <v-list-item-action></v-list-item-action>
@@ -23,6 +33,7 @@
 
 <script>
 import { db } from "../plugins/firebase";
+import firebase from "firebase";
 
 export default {
   name: "ChatBoard",
@@ -43,6 +54,13 @@ export default {
       db.collection("comments")
         .doc(id)
         .delete();
+    },
+    likeComment(id) {
+      db.collection("comments")
+        .doc(id)
+        .update({
+          likes: firebase.firestore.FieldValue.increment(50)
+        });
     }
   }
 };
