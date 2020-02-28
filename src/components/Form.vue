@@ -2,7 +2,7 @@
   <div>
     <v-dialog v-model="displayForm" max-width="600px">
       <template v-slot:activator="{ on }">
-        <v-btn color="secondary" dark v-on="on">Tweet</v-btn>
+        <v-btn class="ma-2" color="secondary" dark v-on="on">Tweet</v-btn>
       </template>
       <v-card>
         <v-card-title>

@@ -1,6 +1,9 @@
 <template>
   <v-app>
     <v-container>
+      <Signup />
+      <Signin />
+      <Signout />
       <ChatBoard />
       <ChatForm />
     </v-container>
@@ -10,13 +13,19 @@
 <script>
 import ChatBoard from "./components/ChatBoard";
 import ChatForm from "./components/Form";
+import Signup from "./components/Signup";
+import Signin from "./components/Signin";
+import Signout from "./components/Signout";
 
 export default {
   name: "App",
 
   components: {
     ChatBoard,
-    ChatForm
+    ChatForm,
+    Signup,
+    Signin,
+    Signout
   }
 };
 </script>
