@@ -1,31 +1,33 @@
 <template>
-  <v-app>
-    <v-container>
-      <Signup />
-      <Signin />
-      <Signout />
-      <ChatBoard />
-      <ChatForm />
-    </v-container>
-  </v-app>
+  <div id="app">
+    <div id="nav">
+      <router-link to="/">Home</router-link> |
+      <router-link to="/signup">ユーザー登録</router-link> |
+      <router-link to="/signin">ログイン</router-link>
+    </div>
+    <router-view />
+  </div>
 </template>
 
-<script>
-import ChatBoard from "./components/ChatBoard";
-import ChatForm from "./components/Form";
-import Signup from "./components/Signup";
-import Signin from "./components/Signin";
-import Signout from "./components/Signout";
+<style lang="scss">
+#app {
+  font-family: Avenir, Helvetica, Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  // text-align: center;
+  color: #2c3e50;
+}
 
-export default {
-  name: "App",
+#nav {
+  padding: 20px 20px 0;
 
-  components: {
-    ChatBoard,
-    ChatForm,
-    Signup,
-    Signin,
-    Signout
+  a {
+    font-weight: bold;
+    color: #2c3e50;
+
+    &.router-link-exact-active {
+      color: #42b983;
+    }
   }
-};
-</script>
+}
+</style>
