@@ -1,52 +1,50 @@
 <template>
-  <v-app>
-    <v-container fluid>
-      <v-row justify="center">
-        <v-col cols="12" sm="10" md="8" lg="6">
-          <v-alert
-            v-model="alert.isDisplay"
-            :type="alert.type"
-            dismissible
-            border="left"
-            elevation="2"
-            colored-border
-            transition="scroll-y-transition"
-          >{{alert.message}}</v-alert>
+  <v-container fluid>
+    <v-row justify="center">
+      <v-col cols="12" sm="10" md="8" lg="6">
+        <v-alert
+          v-model="alert.isDisplay"
+          :type="alert.type"
+          dismissible
+          border="left"
+          elevation="2"
+          colored-border
+          transition="scroll-y-transition"
+        >{{alert.message}}</v-alert>
 
-          <v-card>
-            <v-card-title>
-              <span class="headline">ユーザー登録</span>
-            </v-card-title>
-            <v-card-text>
-              <v-container>
-                <v-row>
-                  <v-col cols="12">
-                    <v-text-field v-model="displayName" label="Nickname" required clearable></v-text-field>
-                  </v-col>
-                  <v-col cols="12">
-                    <v-text-field v-model="username" label="Email" required clearable></v-text-field>
-                  </v-col>
-                  <v-col cols="12">
-                    <v-text-field
-                      v-model="password"
-                      label="Password"
-                      type="password"
-                      required
-                      clearable
-                    ></v-text-field>
-                  </v-col>
-                </v-row>
-              </v-container>
-            </v-card-text>
-            <v-card-actions>
-              <v-spacer></v-spacer>
-              <v-btn color="blue darken-1" text @click="signUp">登録</v-btn>
-            </v-card-actions>
-          </v-card>
-        </v-col>
-      </v-row>
-    </v-container>
-  </v-app>
+        <v-card>
+          <v-card-title>
+            <span class="headline">ユーザー登録</span>
+          </v-card-title>
+          <v-card-text>
+            <v-container>
+              <v-row>
+                <v-col cols="12">
+                  <v-text-field v-model="displayName" label="Nickname" required clearable></v-text-field>
+                </v-col>
+                <v-col cols="12">
+                  <v-text-field v-model="username" label="Email" required clearable></v-text-field>
+                </v-col>
+                <v-col cols="12">
+                  <v-text-field
+                    v-model="password"
+                    label="Password"
+                    type="password"
+                    required
+                    clearable
+                  ></v-text-field>
+                </v-col>
+              </v-row>
+            </v-container>
+          </v-card-text>
+          <v-card-actions>
+            <v-spacer></v-spacer>
+            <v-btn color="blue darken-1" text @click="signUp">登録</v-btn>
+          </v-card-actions>
+        </v-card>
+      </v-col>
+    </v-row>
+  </v-container>
 </template>
 
 <script>

@@ -8,6 +8,10 @@ Vue.use(VueRouter);
 
 const routes = [
   {
+    path: "*",
+    redirect: "/signin"
+  },
+  {
     path: "/",
     name: "Home",
     component: Home

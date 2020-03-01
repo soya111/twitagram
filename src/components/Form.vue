@@ -1,32 +1,24 @@
 <template>
-  <v-form>
-    <v-container>
-      <v-row>
-        <v-col cols="12">
-          <v-footer fixed>
-            <v-text-field
-              class="mt-2 mb-n4"
-              v-model="message"
-              :append-outer-icon="message ? 'mdi-send' : 'mdi-microphone'"
-              :prepend-icon="icon"
-              required
-              dense
-              light
-              solo
-              single-line
-              clear-icon="mdi-close-circle"
-              clearable
-              label="Message"
-              type="text"
-              @click:append-outer="sendMessage"
-              @click:prepend="changeIcon"
-              @click:clear="clearMessage"
-            ></v-text-field>
-          </v-footer>
-        </v-col>
-      </v-row>
-    </v-container>
-  </v-form>
+  <v-footer fixed>
+    <v-text-field
+      class="mt-1 mb-n5"
+      v-model="message"
+      :append-outer-icon="message ? 'mdi-send' : 'mdi-microphone'"
+      :prepend-icon="icon"
+      required
+      dense
+      outlined
+      light
+      single-line
+      clear-icon="mdi-close-circle"
+      clearable
+      label="Message"
+      type="text"
+      @click:append-outer="sendMessage"
+      @click:prepend="changeIcon"
+      @click:clear="clearMessage"
+    ></v-text-field>
+  </v-footer>
 </template>
 
 <script>

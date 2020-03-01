@@ -1,49 +1,47 @@
 <template>
-  <v-app>
-    <v-container fluid>
-      <v-row justify="center">
-        <v-col cols="12" sm="10" md="8" lg="6">
-          <v-alert
-            v-model="alert.isDisplay"
-            :type="alert.type"
-            dismissible
-            border="left"
-            elevation="2"
-            colored-border
-            transition="scroll-y-transition"
-          >{{alert.message}}</v-alert>
+  <v-container fluid>
+    <v-row justify="center">
+      <v-col cols="12" sm="10" md="8" lg="6">
+        <v-alert
+          v-model="alert.isDisplay"
+          :type="alert.type"
+          dismissible
+          border="left"
+          elevation="2"
+          colored-border
+          transition="scroll-y-transition"
+        >{{alert.message}}</v-alert>
 
-          <v-card>
-            <v-card-title>
-              <span class="headline">ログイン</span>
-            </v-card-title>
-            <v-card-text>
-              <v-container>
-                <v-row>
-                  <v-col cols="12">
-                    <v-text-field v-model="username" label="Email" required clearable></v-text-field>
-                  </v-col>
-                  <v-col cols="12">
-                    <v-text-field
-                      v-model="password"
-                      label="Password"
-                      type="password"
-                      required
-                      clearable
-                    ></v-text-field>
-                  </v-col>
-                </v-row>
-              </v-container>
-            </v-card-text>
-            <v-card-actions>
-              <v-spacer></v-spacer>
-              <v-btn color="blue darken-1" text @click="signIn">ログイン</v-btn>
-            </v-card-actions>
-          </v-card>
-        </v-col>
-      </v-row>
-    </v-container>
-  </v-app>
+        <v-card>
+          <v-card-title>
+            <span class="headline">ログイン</span>
+          </v-card-title>
+          <v-card-text>
+            <v-container>
+              <v-row>
+                <v-col cols="12">
+                  <v-text-field v-model="username" label="Email" required clearable></v-text-field>
+                </v-col>
+                <v-col cols="12">
+                  <v-text-field
+                    v-model="password"
+                    label="Password"
+                    type="password"
+                    required
+                    clearable
+                  ></v-text-field>
+                </v-col>
+              </v-row>
+            </v-container>
+          </v-card-text>
+          <v-card-actions>
+            <v-spacer></v-spacer>
+            <v-btn color="blue darken-1" text @click="signIn">ログイン</v-btn>
+          </v-card-actions>
+        </v-card>
+      </v-col>
+    </v-row>
+  </v-container>
 </template>
 
 <script>
@@ -102,6 +100,9 @@ export default {
               this.alert.message =
                 "このアカウントは管理者によって凍結されました";
               this.alert.type = "warning";
+              break;
+            case "A network error (such as timeout, interrupted connection or unreachable host) has occurred.":
+              this.alert.message = "ネットワークエラーが発生しました。";
               break;
             default:
               alert(error);
