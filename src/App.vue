@@ -3,6 +3,19 @@
     <!-- App.vue -->
     <v-app>
       <v-navigation-drawer app v-model="drawer">
+        <template v-slot:prepend>
+          <v-list-item two-line>
+            <v-list-item-avatar>
+              <img src="https://randomuser.me/api/portraits/women/81.jpg" />
+            </v-list-item-avatar>
+
+            <v-list-item-content>
+              <v-list-item-title>Jane Smith</v-list-item-title>
+              <v-list-item-subtitle>Logged In</v-list-item-subtitle>
+            </v-list-item-content>
+          </v-list-item>
+        </template>
+        <v-divider></v-divider>
         <v-list nav dense id="nav">
           <v-list-item-group v-model="group" active-class="deep-purple--text text--accent-4">
             <router-link v-for="item in drawerItems" :key="item.tilte" :to="item.link">
@@ -18,6 +31,11 @@
             </router-link>
           </v-list-item-group>
         </v-list>
+        <template v-slot:append>
+          <div class="pa-2">
+            <v-btn color="green" block dark>Logout</v-btn>
+          </div>
+        </template>
       </v-navigation-drawer>
 
       <v-app-bar app color="deep-purple" dark>

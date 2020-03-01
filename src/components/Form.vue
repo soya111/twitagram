@@ -23,6 +23,7 @@
 
 <script>
 import { db } from "../plugins/firebase";
+import firebase from "firebase";
 
 export default {
   name: "CreateForm",
@@ -49,8 +50,10 @@ export default {
     addComment() {
       if (this.message == "") return;
       const now = new Date();
+      let user = firebase.auth().currentUser;
       // コメントをFirestoreへ登録
       db.collection("comments").add({
+        tweeter: user.displayName,
         content: this.message,
         avatar:
           "https://i.picsum.photos/id/" +

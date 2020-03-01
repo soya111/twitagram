@@ -87,6 +87,9 @@ export default {
           };
           this.registerDisplayName(this.displayName);
           this.username = this.password = this.displayName = "";
+          setTimeout(() => {
+            this.$router.push("/");
+          }, 2000);
         })
         .catch(error => {
           this.alert = {
