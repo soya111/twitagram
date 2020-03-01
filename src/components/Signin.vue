@@ -81,6 +81,9 @@ export default {
             message: "ログインしました。"
           };
           this.username = this.password = "";
+          setTimeout(() => {
+            this.$router.push("/");
+          }, 2000);
         })
         .catch(error => {
           this.alert = {
