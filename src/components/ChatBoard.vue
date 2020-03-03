@@ -2,7 +2,7 @@
   <div>
     <v-tabs v-model="model" fixed-tabs>
       <v-tab href="#tab-1">タイムライン</v-tab>
-      <v-tab href="#tab-2">設定</v-tab>
+      <v-tab href="#tab-2">プロフィール</v-tab>
     </v-tabs>
     <v-tabs-items v-model="model">
       <v-tab-item value="tab-1">
@@ -12,6 +12,8 @@
               <template v-for="(comment, index) in comments">
                 <v-list-item :key="index" avatar>
                   <v-list-item-avatar>
+                    <!-- <img :src="returnAvatar(comment.tweeterUid)" /> -->
+                    <!-- <img :src="this.avatar" /> -->
                     <img :src="comment.avatar" />
                   </v-list-item-avatar>
 
@@ -56,10 +58,26 @@
         </v-row>
       </v-tab-item>
       <v-tab-item value="tab-2">
+        <v-card class="mx-auto mt-2" max-width="434" tile>
+          <v-img height="100%" src="https://cdn.vuetifyjs.com/images/cards/server-room.jpg">
+            <v-row align="end" class="fill-height">
+              <v-col align-self="start" class="pa-0" cols="12">
+                <v-avatar class="profile" color="grey" size="164" tile>
+                  <v-img :src="this.currentUser.photoURL"></v-img>
+                </v-avatar>
+              </v-col>
+              <v-col class="py-0">
+                <v-list-item color="rgba(0, 0, 0, .4)" dark>
+                  <v-list-item-content>
+                    <v-list-item-title class="title">{{this.currentUser.displayName}}</v-list-item-title>
+                    <v-list-item-subtitle>{{this.currentUser.email}}</v-list-item-subtitle>
+                  </v-list-item-content>
+                </v-list-item>
+              </v-col>
+            </v-row>
+          </v-img>
+        </v-card>
         <Signout />
-
-        <v-card>{{this.displayName}}</v-card>
-        <v-btn @click="printNickname">nickname表示</v-btn>
       </v-tab-item>
     </v-tabs-items>
   </div>
@@ -79,13 +97,16 @@ export default {
   data: () => ({
     comments: [],
     model: "tab-1",
-    displayName: ""
+    currentUser: null,
+    avatar: ""
   }),
   firestore() {
+    let comments = db.collection("comments").orderBy("createdAt");
+    // console.log(comments[0]);
     return {
       // firestoreのcommentsコレクションを参照
       // comments: db.collection("comments").orderBy("likes")
-      comments: db.collection("comments").orderBy("createdAt")
+      comments: comments
     };
   },
   methods: {
@@ -104,17 +125,27 @@ export default {
           likes: firebase.firestore.FieldValue.increment(50)
         });
     },
-    printNickname() {
-      var user = firebase.auth().currentUser;
-      if (user != null) {
-        alert("Name:" + user.displayName);
-      } else {
-        alert("user is null");
-      }
+    returnAvatar(uid) {
+      db.collection("usersCollection")
+        .doc(uid)
+        .get()
+        .then(function(doc) {
+          if (doc.exists) {
+            console.log(doc.data().photoURL);
+            this.avatar = doc.data().photoURL;
+          } else {
+            // doc.data() will be undefined in this case
+            alert("No such document!");
+          }
+        })
+        .catch(function(error) {
+          console.log("Error getting documents: ", error);
+        });
     }
   },
   created() {
-    this.displayName = firebase.auth().currentUser.displayName;
-  }
+    this.currentUser = firebase.auth().currentUser;
+  },
+  computed: {}
 };
 </script>

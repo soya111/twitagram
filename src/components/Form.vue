@@ -53,12 +53,9 @@ export default {
       let user = firebase.auth().currentUser;
       // コメントをFirestoreへ登録
       db.collection("comments").add({
-        tweeter: user.displayName,
+        tweeterUid: user.uid,
         content: this.message,
-        avatar:
-          "https://i.picsum.photos/id/" +
-          (Math.floor(Math.random() * 1083) + 1) +
-          "/200/200.jpg",
+        avatar: user.photoURL,
         likes: 0,
         createdAt: now
       });

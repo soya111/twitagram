@@ -48,6 +48,7 @@
 </template>
 
 <script>
+import { db } from "../plugins/firebase";
 import firebase from "firebase";
 
 export default {
@@ -78,14 +79,36 @@ export default {
       firebase
         .auth()
         .createUserWithEmailAndPassword(this.username, this.password)
-        .then(() => {
+        .then(user => {
           this.alert = {
             isDisplay: true,
             type: "success",
             message:
               "ユーザー登録ができました。ニックネーム:" + this.displayName
           };
-          this.registerDisplayName(this.displayName);
+          let photoURL =
+            "https://i.picsum.photos/id/" +
+            (Math.floor(Math.random() * 1083) + 1) +
+            "/200/200.jpg";
+          user.user
+            .updateProfile({
+              displayName: this.displayName,
+              photoURL: photoURL
+            })
+            .then(() => {})
+            .catch(error => {
+              alert(error.message);
+            });
+          db.collection("usersCollection")
+            .doc(user.user.uid)
+            .set({
+              photoURL: photoURL
+            })
+            .then(() => {})
+            .catch(error => {
+              alert(error.message);
+            });
+
           this.username = this.password = this.displayName = "";
           setTimeout(() => {
             this.$router.push("/");
@@ -111,19 +134,6 @@ export default {
           }
         });
       this.dialog = false;
-    },
-    registerDisplayName(Nickname) {
-      var user = firebase.auth().currentUser;
-      if (user != null) {
-        user
-          .updateProfile({
-            displayName: Nickname
-          })
-          .then(() => {})
-          .catch(error => {
-            alert(error.message);
-          });
-      }
     }
   }
 };
