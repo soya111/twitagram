@@ -1,83 +1,88 @@
 <template>
-  <div>
-    <v-dialog v-model="displayForm" max-width="600px">
-      <template v-slot:activator="{ on }">
-        <v-btn color="secondary" dark v-on="on">Tweet</v-btn>
-      </template>
-      <v-card>
-        <v-card-title>
-          <span class="headline">Tweet</span>
-        </v-card-title>
-        <v-card-text>
-          <v-container>
-            <v-row>
-              <v-col cols="12">
-                <v-form ref="form" v-model="valid" lazy-validation>
-                  <v-text-field
-                    v-model="inputComment"
-                    :rules="commentRules"
-                    label="Content"
-                    required
-                  ></v-text-field>
-                </v-form>
-              </v-col>
-            </v-row>
-          </v-container>
-        </v-card-text>
-        <v-card-actions>
-          <v-spacer></v-spacer>
-          <v-btn color="blue darken-1" text @click="hideCreateForm">Close</v-btn>
-          <v-btn color="blue darken-1" :disabled="!valid" @click="addComment" text>Comment!</v-btn>
-        </v-card-actions>
-      </v-card>
-    </v-dialog>
-  </div>
+  <v-footer fixed>
+    <v-text-field
+      class="mt-1 mb-n5"
+      v-model="message"
+      :append-outer-icon="message ? 'mdi-send' : 'mdi-microphone'"
+      :prepend-icon="icon"
+      required
+      dense
+      outlined
+      light
+      single-line
+      clear-icon="mdi-close-circle"
+      clearable
+      label="Message"
+      type="text"
+      @click:append-outer="sendMessage"
+      @click:prepend="changeIcon"
+      @click:clear="clearMessage"
+    ></v-text-field>
+  </v-footer>
 </template>
 
 <script>
 import { db } from "../plugins/firebase";
+import firebase from "firebase";
 
 export default {
   name: "CreateForm",
   data: () => ({
-    // form入力データ
-    inputComment: "",
-    // バリデーション
-    valid: true,
     commentRules: [v => !!v || "コメントは必須項目です"],
     // Formダイアログの表示可否
-    displayForm: false
+    show: false,
+    message: "Hey!",
+    marker: true,
+    iconIndex: 0,
+    icons: [
+      "mdi-emoticon",
+      "mdi-emoticon-cool",
+      "mdi-emoticon-dead",
+      "mdi-emoticon-excited",
+      "mdi-emoticon-happy",
+      "mdi-emoticon-neutral",
+      "mdi-emoticon-sad",
+      "mdi-emoticon-tongue"
+    ]
   }),
   methods: {
     // コメント追加
     addComment() {
+      if (this.message == "") return;
       const now = new Date();
+      let user = firebase.auth().currentUser;
       // コメントをFirestoreへ登録
       db.collection("comments").add({
-        content: this.inputComment,
-        avatar:
-          "https://i.picsum.photos/id/" +
-          (Math.floor(Math.random() * 1083) + 1) +
-          "/200/200.jpg",
+        tweeterUid: user.uid,
+        content: this.message,
+        avatar: user.photoURL,
         likes: 0,
         createdAt: now
       });
-      // ダイアログを閉じる
-      this.hideCreateForm();
     },
-    // Formの初期化
-    clear() {
-      this.$refs.form.reset();
+    toggleMarker() {
+      this.marker = !this.marker;
     },
-    // Formダイアログの表示
-    showCreateForm() {
-      this.displayForm = true;
+    sendMessage() {
+      this.addComment();
+      this.resetIcon();
+      this.clearMessage();
     },
-    //
-    // Formダイアログの非表示
-    hideCreateForm() {
-      this.clear();
-      this.displayForm = false;
+    clearMessage() {
+      this.message = "";
+    },
+    resetIcon() {
+      this.iconIndex = 0;
+    },
+    changeIcon() {
+      this.iconIndex === this.icons.length - 1
+        ? (this.iconIndex = 0)
+        : this.iconIndex++;
+    }
+  },
+  computed: {
+    icon() {
+      return this.icons[this.iconIndex];
     }
   }
 };
