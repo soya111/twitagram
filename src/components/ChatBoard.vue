@@ -107,6 +107,7 @@
           </v-img>
         </v-card>
         <Signout />
+        <DeleteUser />
         <div class="text-center">
           <v-btn class="ma-2" outlined color="indigo" @click="changeImage"
             >プロフィール画像変更</v-btn
@@ -123,11 +124,13 @@ import { db } from "../plugins/firebase";
 import firebase from "firebase";
 import ChatForm from "@/components/Form.vue";
 import Signout from "@/components/Signout.vue";
+import DeleteUser from "@/components/DeleteUser.vue";
 export default {
   name: "ChatBoard",
   components: {
     Signout,
-    ChatForm
+    ChatForm,
+    DeleteUser
   },
   data: () => ({
     comments: [],
