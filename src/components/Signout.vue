@@ -1,5 +1,7 @@
 <template>
   <div class="text-center">
+    <v-snackbar v-model="alert.isDisplay" top absolute :color="alert.type">{{ alert.message }}</v-snackbar>
+
     <v-btn class="ma-2" outlined color="indigo" @click="signOut">ログアウト</v-btn>
   </div>
 </template>
@@ -10,7 +12,13 @@ import firebase from "firebase";
 export default {
   name: "Signout",
   data: () => {
-    return {};
+    return {
+      alert: {
+        isDisplay: false,
+        type: "",
+        message: ""
+      }
+    };
   },
   methods: {
     signOut() {
@@ -20,10 +28,18 @@ export default {
           .auth()
           .signOut()
           .then(() => {
-            alert("ログアウトしました。");
+            this.alert = {
+              isDisplay: true,
+              type: "success",
+              message: "ログアウトしました。"
+            };
           })
           .catch(error => {
-            alert(error.message);
+            this.alert = {
+              isDisplay: true,
+              type: "success",
+              message: error.message
+            };
           });
       }
     }

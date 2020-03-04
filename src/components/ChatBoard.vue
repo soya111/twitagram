@@ -1,6 +1,6 @@
 <template>
   <div>
-    <v-tabs v-model="model" fixed-tabs>
+    <v-tabs v-model="model" fixed-tabs color="indigo">
       <v-tab href="#tab-1">タイムライン</v-tab>
       <v-tab href="#tab-2">プロフィール</v-tab>
     </v-tabs>
@@ -8,59 +8,68 @@
       <v-tab-item value="tab-1">
         <v-row justify="center">
           <v-col cols="12" sm="10" md="8" lg="6">
-            <v-list three-line class="mb-6">
+            <v-list class="mb-6">
               <template v-for="(comment, index) in comments">
-                <v-list-item :key="index" avatar>
-                  <v-list-item-avatar>
-                    <!-- <img :src="returnAvatar(comment.tweeterUid)" /> -->
-                    <!-- <img :src="this.avatar" /> -->
-                    <img :src="comment.avatar" />
-                  </v-list-item-avatar>
+                <v-card
+                  class="mx-auto mb-2 chatboard-comment"
+                  :key="index"
+                  color="indigo lighten-2"
+                  dark
+                  max-width="400"
+                  transition="fade-transition"
+                >
+                  <v-card-title class="px-0 pt-2">
+                    <v-list-item>
+                      <!-- <v-badge
+                        color="deep-purple accent-4"
+                        overlap
+                        icon="mdi-lock"
+                        offset-x="25"
+                        offset-y="25"
+                        :value="messages"
+                      >-->
+                      <v-list-item-avatar color="grey darken-3">
+                        <v-img class :src="comment.avatar"></v-img>
+                      </v-list-item-avatar>
+                      <!-- </v-badge> -->
+                      <v-list-item-content>
+                        <v-list-item-title>{{comment.tweeterName}}</v-list-item-title>
+                      </v-list-item-content>
+                      <v-spacer></v-spacer>
 
-                  <v-list-item-content class="mb-0">
-                    <v-list-item-title class="title">{{
-                      comment.tweeter
-                    }}</v-list-item-title>
-                    <v-list-item-subtitle class="text--primary subtitle-1">
-                      {{ comment.content }}
-                    </v-list-item-subtitle>
-                    <v-list-item-subtitle>
-                      {{ comment.createdAt.toDate().toLocaleString() }}
-                    </v-list-item-subtitle>
-                    <div class="d-flex flex-row">
-                      <v-col cols="6" class="mb-0">
-                        <v-btn
-                          text
-                          icon
-                          small
-                          color="pink"
-                          @click="likeComment(comment.id)"
-                        >
-                          <v-icon>mdi-heart</v-icon>
-                        </v-btn>
-                        {{ comment.likes }}
-                      </v-col>
-                      <v-col cols="3" class="mb-0">
-                        <v-btn text icon small color="green">
-                          <v-icon>mdi-cached</v-icon>
-                        </v-btn>
-                      </v-col>
-                      <v-col cols="3" class="mb-0">
-                        <v-btn
-                          text
-                          icon
-                          small
-                          color="navy"
-                          @click="deleteComment(comment.id)"
-                        >
-                          <v-icon>mdi-delete</v-icon>
-                        </v-btn>
-                      </v-col>
-                    </div>
-                  </v-list-item-content>
-                  <v-list-item-action></v-list-item-action>
-                </v-list-item>
-                <v-divider :key="comment.id"></v-divider>
+                      <v-menu bottom left>
+                        <template v-slot:activator="{ on }">
+                          <v-btn dark icon v-on="on">
+                            <v-icon>mdi-dots-vertical</v-icon>
+                          </v-btn>
+                        </template>
+
+                        <v-list class="py-0" transition="scroll-y-transition">
+                          <v-list-item @click="deleteComment(comment.id)">
+                            <v-list-item-title class="subtile-1">削除</v-list-item-title>
+                          </v-list-item>
+                        </v-list>
+                      </v-menu>
+                    </v-list-item>
+                  </v-card-title>
+
+                  <v-card-text class="headline font-weight-bold mx-2 my-0">{{comment.content}}</v-card-text>
+
+                  <v-card-actions>
+                    <v-list-item class="grow">
+                      <v-list-item-content>
+                        <v-list-item-title
+                          class=".overline"
+                        >{{ comment.createdAt.toDate().toLocaleString() }}</v-list-item-title>
+                      </v-list-item-content>
+
+                      <v-row align="center" justify="end">
+                        <v-icon class="mr-1" @click="likeComment(comment.id)">mdi-heart</v-icon>
+                        <span class="subheading mr-2">{{ comment.likes }}</span>
+                      </v-row>
+                    </v-list-item>
+                  </v-card-actions>
+                </v-card>
               </template>
               <ChatForm />
             </v-list>
@@ -68,23 +77,9 @@
         </v-row>
       </v-tab-item>
       <v-tab-item value="tab-2">
-        <v-alert
-          v-model="alert.isDisplay"
-          :type="alert.type"
-          dismissible
-          border="left"
-          elevation="2"
-          colored-border
-          transition="scroll-y-transition"
-          class="ma-2 mx-auto"
-          max-width="434"
-          >{{ alert.message }}</v-alert
-        >
+        <v-snackbar v-model="alert.isDisplay" top absolute :color="alert.type">{{ alert.message }}</v-snackbar>
         <v-card class="mx-auto ma-2" max-width="434" tile>
-          <v-img
-            height="100%"
-            src="https://cdn.vuetifyjs.com/images/cards/server-room.jpg"
-          >
+          <v-img height="100%" src="https://cdn.vuetifyjs.com/images/cards/server-room.jpg">
             <v-row align="end" class="fill-height">
               <v-col align-self="start" class="pa-0" cols="12">
                 <v-avatar class="profile" color="grey" size="164" tile>
@@ -94,12 +89,16 @@
               <v-col class="py-0">
                 <v-list-item color="rgba(0, 0, 0, .4)" dark>
                   <v-list-item-content>
-                    <v-list-item-title class="title">{{
+                    <v-list-item-title class="title">
+                      {{
                       this.currentUser.displayName
-                    }}</v-list-item-title>
-                    <v-list-item-subtitle>{{
+                      }}
+                    </v-list-item-title>
+                    <v-list-item-subtitle>
+                      {{
                       this.currentUser.email
-                    }}</v-list-item-subtitle>
+                      }}
+                    </v-list-item-subtitle>
                   </v-list-item-content>
                 </v-list-item>
               </v-col>
@@ -109,9 +108,7 @@
         <Signout />
         <DeleteUser />
         <div class="text-center">
-          <v-btn class="ma-2" outlined color="indigo" @click="changeImage"
-            >プロフィール画像変更</v-btn
-          >
+          <v-btn class="ma-2" outlined color="indigo" @click="changeImage">プロフィール画像変更</v-btn>
         </div>
       </v-tab-item>
     </v-tabs-items>
@@ -141,7 +138,8 @@ export default {
       isDisplay: false,
       type: "",
       message: ""
-    }
+    },
+    messages: true
   }),
   firestore() {
     let comments = db.collection("comments").orderBy("createdAt");
@@ -154,9 +152,9 @@ export default {
   },
   methods: {
     deleteComment(id) {
-      if (!confirm("コメントを削除してよろしいですか？")) {
-        return;
-      }
+      // if (!confirm("コメントを削除してよろしいですか？")) {
+      //   return;
+      // }
       db.collection("comments")
         .doc(id)
         .delete();
@@ -165,7 +163,7 @@ export default {
       db.collection("comments")
         .doc(id)
         .update({
-          likes: firebase.firestore.FieldValue.increment(50)
+          likes: firebase.firestore.FieldValue.increment(1)
         });
     },
     returnAvatar(uid) {
@@ -221,6 +219,7 @@ export default {
   },
   created() {
     this.currentUser = firebase.auth().currentUser;
+    // console.log("ChatBoard: ", this.currentUser);
   },
   computed: {}
 };

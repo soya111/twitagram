@@ -2,15 +2,7 @@
   <v-container fluid>
     <v-row justify="center">
       <v-col cols="12" sm="10" md="8" lg="6">
-        <v-alert
-          v-model="alert.isDisplay"
-          :type="alert.type"
-          dismissible
-          border="left"
-          elevation="2"
-          colored-border
-          transition="scroll-y-transition"
-        >{{alert.message}}</v-alert>
+        <v-snackbar v-model="alert.isDisplay" top absolute :color="alert.type">{{ alert.message }}</v-snackbar>
 
         <v-card>
           <v-card-title>
@@ -102,7 +94,8 @@ export default {
           db.collection("usersCollection")
             .doc(user.user.uid)
             .set({
-              photoURL: photoURL
+              photoURL: photoURL,
+              displayName: this.displayName
             })
             .then(() => {})
             .catch(error => {

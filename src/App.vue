@@ -2,7 +2,7 @@
   <div id="app">
     <!-- App.vue -->
     <v-app>
-      <v-navigation-drawer app v-model="drawer">
+      <v-navigation-drawer app v-model="drawer" color="indigo lighten-2" dark>
         <template v-slot:prepend>
           <v-list-item two-line>
             <v-list-item-avatar>
@@ -18,7 +18,7 @@
         <v-divider></v-divider>
         <v-list nav dense id="nav">
           <v-list-item-group v-model="group" active-class="deep-purple--text text--accent-4">
-            <router-link v-for="item in drawerItems" :key="item.tilte" :to="item.link">
+            <router-link v-for="item in drawerItems" :key="item.title" :to="item.link">
               <v-list-item>
                 <v-list-item-icon>
                   <v-icon>{{ item.icon }}</v-icon>
@@ -33,12 +33,12 @@
         </v-list>
         <template v-slot:append>
           <div class="pa-2">
-            <v-btn color="green" block dark>Logout</v-btn>
+            <v-btn color="green" disabled block dark>Logout</v-btn>
           </div>
         </template>
       </v-navigation-drawer>
 
-      <v-app-bar app color="deep-purple" dark>
+      <v-app-bar app color="indigo" dark>
         <v-app-bar-nav-icon @click="drawer = !drawer"></v-app-bar-nav-icon>
         <v-toolbar-title>リアルタイムチャット</v-toolbar-title>
         <v-spacer></v-spacer>
@@ -63,6 +63,8 @@
 </template>
 
 <script>
+import firebase from "firebase";
+
 export default {
   data: () => ({
     drawer: false,
@@ -70,8 +72,16 @@ export default {
       { link: "/", title: "Home", icon: "mdi-home" },
       { link: "/signup", title: "ユーザー登録", icon: "mdi-account-plus" },
       { link: "/signin", title: "ログイン", icon: "mdi-account-arrow-left" }
-    ]
-  })
+    ],
+    currentUser: {
+      photoURL: "https://i.picsum.photos/id/619/200/200.jpg"
+    },
+    url: "./assets/logo.png"
+  }),
+  beforeCreate() {
+    this.currentUser = firebase.auth().currentUser;
+    // console.log("App: ", this.currentUser);
+  }
 };
 </script>
 

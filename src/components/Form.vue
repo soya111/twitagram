@@ -1,5 +1,5 @@
 <template>
-  <v-footer fixed>
+  <v-footer fixed color="cyan darken-4">
     <v-text-field
       class="mt-1 mb-n5"
       v-model="message"
@@ -8,7 +8,7 @@
       required
       dense
       outlined
-      light
+      dark
       single-line
       clear-icon="mdi-close-circle"
       clearable
@@ -56,6 +56,7 @@ export default {
         tweeterUid: user.uid,
         content: this.message,
         avatar: user.photoURL,
+        tweeterName: user.displayName,
         likes: 0,
         createdAt: now
       });
