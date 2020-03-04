@@ -1,17 +1,8 @@
 <template>
   <v-container fluid>
     <v-row justify="center">
+      <v-snackbar v-model="alert.isDisplay" top absolute :color="alert.type">{{ alert.message }}</v-snackbar>
       <v-col cols="12" sm="10" md="8" lg="6">
-        <v-alert
-          v-model="alert.isDisplay"
-          :type="alert.type"
-          dismissible
-          border="left"
-          elevation="2"
-          colored-border
-          transition="scroll-y-transition"
-        >{{alert.message}}</v-alert>
-
         <v-card>
           <v-card-title>
             <span class="headline">ログイン</span>
@@ -50,8 +41,8 @@ import firebase from "firebase";
 export default {
   name: "Signin",
   data: () => ({
-    username: "",
-    password: "",
+    username: "sample@s.com",
+    password: "123456",
     alert: {
       isDisplay: false,
       type: "",
@@ -101,14 +92,18 @@ export default {
               break;
             case "The user account has been disabled by an administrator.":
               this.alert.message =
-                "このアカウントは管理者によって凍結されました";
+                "このアカウントは管理者によって凍結されました。";
               this.alert.type = "warning";
               break;
             case "A network error (such as timeout, interrupted connection or unreachable host) has occurred.":
               this.alert.message = "ネットワークエラーが発生しました。";
               break;
+            case "Too many unsuccessful login attempts. Please try again later.":
+              this.alert.message =
+                "一定時間内のログイン試行回数が上限に達したため、しばらく時間がたってからもう一度試してください。";
+              break;
             default:
-              alert(error);
+              this.alert.message = error.message;
           }
         });
       this.dialog = false;

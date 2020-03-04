@@ -60,7 +60,13 @@ router.beforeEach((to, from, next) => {
       }
     });
   } else {
-    next();
+    firebase.auth().onAuthStateChanged(user => {
+      if (user) {
+        next({ path: "/" });
+      } else {
+        next();
+      }
+    });
   }
 });
 

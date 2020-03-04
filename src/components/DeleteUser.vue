@@ -2,21 +2,15 @@
   <v-row justify="center">
     <v-dialog v-model="dialog" persistent max-width="290">
       <template v-slot:activator="{ on }">
-        <v-btn color="primary" dark v-on="on">アカウント削除</v-btn>
+        <v-btn color="indigo" dark v-on="on">アカウント削除</v-btn>
       </template>
       <v-card>
         <v-card-title class="headline">アカウントを削除しますか?</v-card-title>
-        <v-card-text
-          >このアカウントに関するデータは完全に消去され、元に戻せなくなります。</v-card-text
-        >
+        <v-card-text>このアカウントに関するデータは完全に消去され、元に戻せなくなります。</v-card-text>
         <v-card-actions>
           <v-spacer></v-spacer>
-          <v-btn color="green darken-1" text @click="dialog = false"
-            >戻る</v-btn
-          >
-          <v-btn color="green darken-1" text @click="deleteUser"
-            >削除する</v-btn
-          >
+          <v-btn color="green darken-1" text @click="dialog = false">戻る</v-btn>
+          <v-btn color="green darken-1" text @click="deleteUser">削除する</v-btn>
         </v-card-actions>
       </v-card>
     </v-dialog>
