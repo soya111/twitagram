@@ -18,20 +18,24 @@
                   </v-list-item-avatar>
 
                   <v-list-item-content class="mb-0">
-                    <v-list-item-title class="title">{{comment.tweeter}}</v-list-item-title>
+                    <v-list-item-title class="title">{{
+                      comment.tweeter
+                    }}</v-list-item-title>
                     <v-list-item-subtitle class="text--primary subtitle-1">
-                      {{
-                      comment.content
-                      }}
+                      {{ comment.content }}
                     </v-list-item-subtitle>
                     <v-list-item-subtitle>
-                      {{
-                      comment.createdAt.toDate().toLocaleString()
-                      }}
+                      {{ comment.createdAt.toDate().toLocaleString() }}
                     </v-list-item-subtitle>
                     <div class="d-flex flex-row">
                       <v-col cols="6" class="mb-0">
-                        <v-btn text icon small color="pink" @click="likeComment(comment.id)">
+                        <v-btn
+                          text
+                          icon
+                          small
+                          color="pink"
+                          @click="likeComment(comment.id)"
+                        >
                           <v-icon>mdi-heart</v-icon>
                         </v-btn>
                         {{ comment.likes }}
@@ -42,7 +46,13 @@
                         </v-btn>
                       </v-col>
                       <v-col cols="3" class="mb-0">
-                        <v-btn text icon small color="navy" @click="deleteComment(comment.id)">
+                        <v-btn
+                          text
+                          icon
+                          small
+                          color="navy"
+                          @click="deleteComment(comment.id)"
+                        >
                           <v-icon>mdi-delete</v-icon>
                         </v-btn>
                       </v-col>
@@ -58,8 +68,23 @@
         </v-row>
       </v-tab-item>
       <v-tab-item value="tab-2">
-        <v-card class="mx-auto mt-2" max-width="434" tile>
-          <v-img height="100%" src="https://cdn.vuetifyjs.com/images/cards/server-room.jpg">
+        <v-alert
+          v-model="alert.isDisplay"
+          :type="alert.type"
+          dismissible
+          border="left"
+          elevation="2"
+          colored-border
+          transition="scroll-y-transition"
+          class="ma-2 mx-auto"
+          max-width="434"
+          >{{ alert.message }}</v-alert
+        >
+        <v-card class="mx-auto ma-2" max-width="434" tile>
+          <v-img
+            height="100%"
+            src="https://cdn.vuetifyjs.com/images/cards/server-room.jpg"
+          >
             <v-row align="end" class="fill-height">
               <v-col align-self="start" class="pa-0" cols="12">
                 <v-avatar class="profile" color="grey" size="164" tile>
@@ -69,8 +94,12 @@
               <v-col class="py-0">
                 <v-list-item color="rgba(0, 0, 0, .4)" dark>
                   <v-list-item-content>
-                    <v-list-item-title class="title">{{this.currentUser.displayName}}</v-list-item-title>
-                    <v-list-item-subtitle>{{this.currentUser.email}}</v-list-item-subtitle>
+                    <v-list-item-title class="title">{{
+                      this.currentUser.displayName
+                    }}</v-list-item-title>
+                    <v-list-item-subtitle>{{
+                      this.currentUser.email
+                    }}</v-list-item-subtitle>
                   </v-list-item-content>
                 </v-list-item>
               </v-col>
@@ -78,12 +107,18 @@
           </v-img>
         </v-card>
         <Signout />
+        <div class="text-center">
+          <v-btn class="ma-2" outlined color="indigo" @click="changeImage"
+            >プロフィール画像変更</v-btn
+          >
+        </div>
       </v-tab-item>
     </v-tabs-items>
   </div>
 </template>
 
 <script>
+// import Vue from "vue";
 import { db } from "../plugins/firebase";
 import firebase from "firebase";
 import ChatForm from "@/components/Form.vue";
@@ -98,7 +133,12 @@ export default {
     comments: [],
     model: "tab-1",
     currentUser: null,
-    avatar: ""
+    avatar: "",
+    alert: {
+      isDisplay: false,
+      type: "",
+      message: ""
+    }
   }),
   firestore() {
     let comments = db.collection("comments").orderBy("createdAt");
@@ -140,6 +180,39 @@ export default {
         })
         .catch(function(error) {
           console.log("Error getting documents: ", error);
+        });
+    },
+    changeImage() {
+      let user = firebase.auth().currentUser;
+      let photoURL =
+        "https://i.picsum.photos/id/" +
+        (Math.floor(Math.random() * 1083) + 1) +
+        "/200/200.jpg";
+      let self = this;
+      user
+        .updateProfile({
+          photoURL: photoURL
+        })
+        .then(function() {
+          // Update successful.
+          db.collection("usersCollection")
+            .doc(user.uid)
+            .set({
+              photoURL: photoURL
+            })
+            .then(() => {
+              self.alert = {
+                isDisplay: true,
+                type: "success",
+                message: "変更しました。"
+              };
+            })
+            .catch(error => {
+              alert(error.message);
+            });
+        })
+        .catch(function(error) {
+          alert("change-image" + error);
         });
     }
   },
