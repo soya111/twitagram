@@ -17,7 +17,7 @@
         </template>
         <v-divider></v-divider>
         <v-list nav dense id="nav">
-          <v-list-item-group v-model="group" active-class="deep-purple--text text--accent-4">
+          <v-list-item-group active-class="deep-purple--text text--accent-4">
             <router-link v-for="item in drawerItems" :key="item.title" :to="item.link">
               <v-list-item>
                 <v-list-item-icon>

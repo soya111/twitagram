@@ -1,6 +1,7 @@
 import Vue from "vue";
 import VueRouter from "vue-router";
 import Home from "../views/Home.vue";
+import UserPage from "../views/UserPage";
 import Signup from "@/components/Signup.vue";
 import Signin from "@/components/Signin.vue";
 import firebase from "firebase";
@@ -15,8 +16,15 @@ const routes = [
   {
     path: "/",
     name: "Home",
-    component: Home,
-    meta: { requiresAuth: true }
+    component: Home
+    // meta: { requiresAuth: true }
+  },
+  {
+    path: "/user/:uid",
+    name: "UserPage",
+    component: UserPage,
+    // meta: { requiresAuth: true },
+    props: true
   },
   {
     path: "/signup",
@@ -60,13 +68,13 @@ router.beforeEach((to, from, next) => {
       }
     });
   } else {
-    firebase.auth().onAuthStateChanged(user => {
-      if (user) {
-        next({ path: "/" });
-      } else {
-        next();
-      }
-    });
+    //   firebase.auth().onAuthStateChanged(user => {
+    //     if (user) {
+    //       next({ path: "/" });
+    //     } else {
+    next();
+    //     }
+    //   });
   }
 });
 

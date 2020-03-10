@@ -8,7 +8,7 @@
       <v-tab-item value="tab-1">
         <v-row justify="center">
           <v-col cols="12" sm="10" md="8" lg="6">
-            <v-list class="mb-6">
+            <v-list v-if="comments" class="mb-6">
               <template v-for="(comment, index) in comments">
                 <v-card
                   class="mx-auto mb-2 chatboard-comment"
@@ -20,32 +20,27 @@
                 >
                   <v-card-title class="px-0 pt-2">
                     <v-list-item>
-                      <!-- <v-badge
-                        color="deep-purple accent-4"
-                        overlap
-                        icon="mdi-lock"
-                        offset-x="25"
-                        offset-y="25"
-                        :value="messages"
-                      >-->
-                      <v-list-item-avatar color="grey darken-3">
-                        <v-img class :src="comment.avatar"></v-img>
-                      </v-list-item-avatar>
-                      <!-- </v-badge> -->
+                      <router-link :to="'/user/'+ comment.tweeterUid" class="router-link">
+                        <v-list-item-avatar color="grey darken-3">
+                          <!-- <v-img class :src="returnAvatar(comment.tweeterUid)"></v-img> -->
+                          <v-img class :src="comment.avatar"></v-img>
+                        </v-list-item-avatar>
+                      </router-link>
                       <v-list-item-content>
                         <v-list-item-title>{{comment.tweeterName}}</v-list-item-title>
                       </v-list-item-content>
+
                       <v-spacer></v-spacer>
 
-                      <v-menu bottom left>
+                      <v-menu bottom left transition="scroll-x-transition">
                         <template v-slot:activator="{ on }">
                           <v-btn dark icon v-on="on">
                             <v-icon>mdi-dots-vertical</v-icon>
                           </v-btn>
                         </template>
 
-                        <v-list class="py-0" transition="scroll-y-transition">
-                          <v-list-item @click="deleteComment(comment.id)">
+                        <v-list class="py-0">
+                          <v-list-item disabled @click="deleteComment(comment.id)">
                             <v-list-item-title class="subtile-1">削除</v-list-item-title>
                           </v-list-item>
                         </v-list>
@@ -78,7 +73,7 @@
       </v-tab-item>
       <v-tab-item value="tab-2">
         <v-snackbar v-model="alert.isDisplay" top absolute :color="alert.type">{{ alert.message }}</v-snackbar>
-        <v-card class="mx-auto ma-2" max-width="434" tile>
+        <v-card v-if="currentUser" class="mx-auto ma-2" max-width="434" tile>
           <v-img height="100%" src="https://cdn.vuetifyjs.com/images/cards/server-room.jpg">
             <v-row align="end" class="fill-height">
               <v-col align-self="start" class="pa-0" cols="12">
@@ -108,7 +103,7 @@
         <Signout />
         <DeleteUser />
         <div class="text-center">
-          <v-btn class="ma-2" outlined color="indigo" @click="changeImage">プロフィール画像変更</v-btn>
+          <v-btn disabled class="ma-2" outlined color="indigo" @click="changeImage">プロフィール画像変更</v-btn>
         </div>
       </v-tab-item>
     </v-tabs-items>
@@ -142,7 +137,7 @@ export default {
     messages: true
   }),
   firestore() {
-    let comments = db.collection("comments").orderBy("createdAt");
+    let comments = db.collection("comments").orderBy("createdAt", "desc");
     // console.log(comments[0]);
     return {
       // firestoreのcommentsコレクションを参照
@@ -167,21 +162,30 @@ export default {
         });
     },
     returnAvatar(uid) {
+      // let avatar;
       db.collection("usersCollection")
         .doc(uid)
-        .get()
-        .then(function(doc) {
-          if (doc.exists) {
-            console.log(doc.data().photoURL);
-            this.avatar = doc.data().photoURL;
-          } else {
-            // doc.data() will be undefined in this case
-            alert("No such document!");
-          }
-        })
-        .catch(function(error) {
-          console.log("Error getting documents: ", error);
+        .onSnapshot(doc => {
+          // console.log("Current data: ", doc.data());
+          console.log(doc.data().photoURL);
+          return doc.data().photoURL;
         });
+      //   .get()
+      //   .then(function(doc) {
+      //     if (doc.exists) {
+      //       console.log(doc.data().photoURL, "11111111111111");
+      //       avatar = doc.data().photoURL;
+      //       return doc.data().photoURL;
+      //     } else {
+      //       // doc.data() will be undefined in this case
+      //       alert("No such document!");
+      //     }
+      //   })
+      //   .catch(function(error) {
+      //     console.log("Error getting documents: ", error);
+      //   });
+      // console.log("2222");
+      // return avatar;
     },
     changeImage() {
       let user = firebase.auth().currentUser;
@@ -198,7 +202,7 @@ export default {
           // Update successful.
           db.collection("usersCollection")
             .doc(user.uid)
-            .set({
+            .update({
               photoURL: photoURL
             })
             .then(() => {
