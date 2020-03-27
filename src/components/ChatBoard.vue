@@ -1,6 +1,6 @@
 <template>
   <div>
-    <v-tabs v-model="model" fixed-tabs color="indigo">
+    <v-tabs v-model="model" fixed-tabs color="teal">
       <v-tab href="#tab-1">タイムライン</v-tab>
       <v-tab href="#tab-2">プロフィール</v-tab>
     </v-tabs>
@@ -8,27 +8,18 @@
       <v-tab-item value="tab-1">
         <v-row justify="center">
           <v-col cols="12" sm="10" md="8" lg="6">
-            <v-list v-if="comments" class="mb-6">
+            <v-list v-if="comments" class transition="fade-transition">
               <template v-for="(comment, index) in comments">
                 <v-card
                   class="mx-auto mb-2 chatboard-comment"
                   :key="index"
-                  color="indigo lighten-2"
+                  color="teal accent-4"
                   dark
                   max-width="400"
-                  transition="fade-transition"
                 >
                   <v-card-title class="px-0 pt-2">
                     <v-list-item>
-                      <router-link :to="'/user/'+ comment.tweeterUid" class="router-link">
-                        <v-list-item-avatar color="grey darken-3">
-                          <!-- <v-img class :src="returnAvatar(comment.tweeterUid)"></v-img> -->
-                          <v-img class :src="comment.avatar"></v-img>
-                        </v-list-item-avatar>
-                      </router-link>
-                      <v-list-item-content>
-                        <v-list-item-title>{{comment.tweeterName}}</v-list-item-title>
-                      </v-list-item-content>
+                      <CommentHeader :uid="comment.tweeterUid" />
 
                       <v-spacer></v-spacer>
 
@@ -40,7 +31,7 @@
                         </template>
 
                         <v-list class="py-0">
-                          <v-list-item disabled @click="deleteComment(comment.id)">
+                          <v-list-item @click="deleteComment(comment.id)">
                             <v-list-item-title class="subtile-1">削除</v-list-item-title>
                           </v-list-item>
                         </v-list>
@@ -66,8 +57,9 @@
                   </v-card-actions>
                 </v-card>
               </template>
-              <ChatForm />
+              <v-btn loading color="transparent" depressed block height="100"></v-btn>
             </v-list>
+            <ChatForm />
           </v-col>
         </v-row>
       </v-tab-item>
@@ -103,7 +95,7 @@
         <Signout />
         <DeleteUser />
         <div class="text-center">
-          <v-btn disabled class="ma-2" outlined color="indigo" @click="changeImage">プロフィール画像変更</v-btn>
+          <v-btn class="ma-2" outlined color="teal" @click="changeImage">プロフィール画像変更</v-btn>
         </div>
       </v-tab-item>
     </v-tabs-items>
@@ -117,12 +109,14 @@ import firebase from "firebase";
 import ChatForm from "@/components/Form.vue";
 import Signout from "@/components/Signout.vue";
 import DeleteUser from "@/components/DeleteUser.vue";
+import CommentHeader from "@/components/CommentHeader.vue";
 export default {
   name: "ChatBoard",
   components: {
     Signout,
     ChatForm,
-    DeleteUser
+    DeleteUser,
+    CommentHeader
   },
   data: () => ({
     comments: [],
@@ -138,7 +132,7 @@ export default {
   }),
   firestore() {
     let comments = db.collection("comments").orderBy("createdAt", "desc");
-    // console.log(comments[0]);
+    // console.log(comments);
     return {
       // firestoreのcommentsコレクションを参照
       // comments: db.collection("comments").orderBy("likes")

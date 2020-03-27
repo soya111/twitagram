@@ -36,13 +36,18 @@ export default {
   },
   data: () => ({
     userData: null,
-    comments: []
+    comments: [],
+    image: null
   }),
   props: {
     uid: String
   },
+  // firestore() {
+  //   console.log(this.uid);
+  // },
   created() {
     this.fetchData();
+    // this.storage();
   },
   methods: {
     fetchData() {
@@ -65,6 +70,11 @@ export default {
           alert("Error getting documents: " + error);
         });
     }
+    // storage() {
+    //   let storageRef = storage.ref();
+    //   let imagesRef = storageRef.child("IMG_0014.JPG");
+    //   console.log(imagesRef);
+    // }
   }
 };
 </script>

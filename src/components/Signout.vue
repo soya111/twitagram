@@ -2,7 +2,7 @@
   <div class="text-center">
     <v-snackbar v-model="alert.isDisplay" top absolute :color="alert.type">{{ alert.message }}</v-snackbar>
 
-    <v-btn class="ma-2" outlined color="indigo" @click="signOut">ログアウト</v-btn>
+    <v-btn class="ma-2" outlined color="teal" @click="signOut">ログアウト</v-btn>
   </div>
 </template>
 

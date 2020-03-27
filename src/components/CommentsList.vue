@@ -4,21 +4,14 @@
       <v-card
         class="mx-auto my-2 chatboard-comment"
         :key="index"
-        color="indigo lighten-2"
+        color="teal accent-4"
         dark
         max-width="400"
         transition="fade-transition"
       >
         <v-card-title class="px-0 pt-2">
           <v-list-item>
-            <router-link :to="'/user/'+ comment.tweeterUid" class="router-link">
-              <v-list-item-avatar color="grey darken-3">
-                <v-img class :src="comment.avatar"></v-img>
-              </v-list-item-avatar>
-            </router-link>
-            <v-list-item-content>
-              <v-list-item-title>{{comment.tweeterName}}</v-list-item-title>
-            </v-list-item-content>
+            <CommentHeader :uid="comment.tweeterUid" />
 
             <v-spacer></v-spacer>
 
@@ -59,9 +52,13 @@
 <script>
 import { db } from "../plugins/firebase";
 import firebase from "firebase";
+import CommentHeader from "@/components/CommentHeader.vue";
 
 export default {
   name: "CommentsList",
+  components: {
+    CommentHeader
+  },
   props: ["uid"],
   data: () => ({ comments: [], avatar: null }),
   firestore() {

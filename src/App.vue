@@ -2,7 +2,7 @@
   <div id="app">
     <!-- App.vue -->
     <v-app>
-      <v-navigation-drawer app v-model="drawer" color="indigo lighten-2" dark>
+      <v-navigation-drawer app v-model="drawer" color="teal accent-4" dark>
         <template v-slot:prepend>
           <v-list-item two-line>
             <v-list-item-avatar>
@@ -17,7 +17,7 @@
         </template>
         <v-divider></v-divider>
         <v-list nav dense id="nav">
-          <v-list-item-group active-class="deep-purple--text text--accent-4">
+          <v-list-item-group active-class="indigo--text text--accent-4">
             <router-link v-for="item in drawerItems" :key="item.title" :to="item.link">
               <v-list-item>
                 <v-list-item-icon>
@@ -38,7 +38,7 @@
         </template>
       </v-navigation-drawer>
 
-      <v-app-bar app color="indigo" dark>
+      <v-app-bar app color="teal" dark>
         <v-app-bar-nav-icon @click="drawer = !drawer"></v-app-bar-nav-icon>
         <v-toolbar-title>リアルタイムチャット</v-toolbar-title>
         <v-spacer></v-spacer>
