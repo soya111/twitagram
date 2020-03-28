@@ -59,7 +59,6 @@
               </template>
               <v-btn loading color="transparent" depressed block height="100"></v-btn>
             </v-list>
-            <ChatForm />
           </v-col>
         </v-row>
       </v-tab-item>
@@ -76,10 +75,42 @@
               <v-col class="py-0">
                 <v-list-item color="rgba(0, 0, 0, .4)" dark>
                   <v-list-item-content>
-                    <v-list-item-title class="title">
-                      {{
-                      this.currentUser.displayName
-                      }}
+                    <v-list-item-title class="title d-flex">
+                      <div>
+                        {{
+                        this.currentUser.displayName
+                        }}
+                      </div>
+                      <v-fab-transition>
+                        <v-btn color="transparent" dark x-small fab @click.stop="openDialog">
+                          <v-icon>mdi-pencil</v-icon>
+                        </v-btn>
+                      </v-fab-transition>
+                      <v-dialog
+                        v-model="dialog"
+                        max-width="600px"
+                        transition="scroll-y-reverse-transition"
+                      >
+                        <v-card>
+                          <v-toolbar flat>
+                            <v-btn icon @click="dialog = false">
+                              <v-icon>mdi-close</v-icon>
+                            </v-btn>
+                            <v-toolbar-title>ユーザー名変更</v-toolbar-title>
+                            <v-spacer></v-spacer>
+                            <v-toolbar-items>
+                              <v-btn text dark color="green" @click.stop="changeDisplayName">変更する</v-btn>
+                            </v-toolbar-items>
+                          </v-toolbar>
+                          <v-container fluid>
+                            <v-text-field
+                              prepend-icon="mdi-account"
+                              v-model="newDisplayName"
+                              clearable
+                            ></v-text-field>
+                          </v-container>
+                        </v-card>
+                      </v-dialog>
                     </v-list-item-title>
                     <v-list-item-subtitle>
                       {{
@@ -98,6 +129,7 @@
           <v-btn class="ma-2" outlined color="teal" @click="changeImage">プロフィール画像変更</v-btn>
         </div>
       </v-tab-item>
+      <ChatForm />
     </v-tabs-items>
   </div>
 </template>
@@ -128,7 +160,9 @@ export default {
       type: "",
       message: ""
     },
-    messages: true
+    messages: true,
+    dialog: false,
+    newDisplayName: ""
   }),
   firestore() {
     let comments = db.collection("comments").orderBy("createdAt", "desc");
@@ -203,7 +237,7 @@ export default {
               self.alert = {
                 isDisplay: true,
                 type: "success",
-                message: "変更しました。"
+                message: "プロフィール画像を変更しました。"
               };
             })
             .catch(error => {
@@ -213,6 +247,42 @@ export default {
         .catch(function(error) {
           alert("change-image" + error);
         });
+    },
+    changeDisplayName() {
+      let newDisplayName = this.newDisplayName;
+      if (!newDisplayName) return;
+      let user = firebase.auth().currentUser;
+      let self = this;
+      user
+        .updateProfile({
+          displayName: newDisplayName
+        })
+        .then(function() {
+          // Update successful.
+          db.collection("usersCollection")
+            .doc(user.uid)
+            .update({ displayName: newDisplayName })
+            .then(() => {
+              self.alert = {
+                isDisplay: true,
+                type: "success",
+                message: "ユーザー名を変更しました。"
+              };
+            })
+            .catch(error => {
+              alert("!", error.message);
+            });
+        })
+        .catch(function(error) {
+          alert("change-displayname" + error);
+        });
+      this.dialog = false;
+      this.newDisplayName = "";
+    },
+    openDialog() {
+      this.dialog = !this.dialog;
+      let user = firebase.auth().currentUser;
+      this.newDisplayName = user.displayName;
     }
   },
   created() {
