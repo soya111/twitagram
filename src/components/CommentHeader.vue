@@ -1,14 +1,18 @@
 <template>
-  <div style="display: flex;">
-    <router-link :to="'/user/'+ this.uid" class="router-link">
+  <div>
+    <router-link
+      :to="'/user/'+ this.uid"
+      class="router-link"
+      style="display: flex; text-decoration: none; color: #fff;"
+    >
       <v-list-item-avatar color="grey darken-3">
         <!-- <v-img class :src="returnAvatar(comment.tweeterUid)"></v-img> -->
         <v-img class :src="user.photoURL"></v-img>
       </v-list-item-avatar>
+      <v-list-item-content>
+        <v-list-item-title class="text-truncate" style="max-width: 200px;">{{user.displayName}}</v-list-item-title>
+      </v-list-item-content>
     </router-link>
-    <v-list-item-content>
-      <v-list-item-title>{{user.displayName}}</v-list-item-title>
-    </v-list-item-content>
   </div>
 </template>
 
@@ -24,7 +28,6 @@ export default {
   firestore() {
     // console.log(this.uid, "from CommentHeader");
     let user = db.collection("usersCollection").doc(this.uid);
-    console.log(user);
     return {
       user: user
     };

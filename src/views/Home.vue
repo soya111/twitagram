@@ -1,25 +1,45 @@
 <template>
   <div class="home">
-    <ChatBoard />
+    <ChatBoard v-show="bottomNav=='timeline'" />
+    <MyProfile v-show="bottomNav=='profile'" />
+    <ChatForm />
+
+    <v-bottom-navigation fixed v-model="bottomNav" grow color="teal">
+      <v-btn value="timeline">
+        <span>タイムライン</span>
+        <v-icon>mdi-chart-timeline-variant</v-icon>
+      </v-btn>
+
+      <!-- <v-btn value="favorites">
+        <span>Favorites</span>
+        <v-icon>mdi-heart</v-icon>
+      </v-btn>-->
+
+      <v-btn value="profile">
+        <span>プロフィール</span>
+        <v-icon>mdi-account</v-icon>
+      </v-btn>
+    </v-bottom-navigation>
   </div>
 </template>
 
 <script>
 // @ is an alias to /src
-// import HelloWorld from "@/components/HelloWorld.vue";
 import ChatBoard from "@/components/ChatBoard.vue";
-// import Signup from "@/components/Signup.vue";
-// import Signin from "@/components/Signin.vue";
-// import Signout from "@/components/Signout.vue";
+import ChatForm from "@/components/Form.vue";
+import MyProfile from "@/components/MyProfile.vue";
 
 export default {
   name: "Home",
   components: {
-    // HelloWorld
-    ChatBoard
-    // Signup,
-    // Signin,
-    // Signout
+    ChatBoard,
+    ChatForm,
+    MyProfile
+  },
+  data() {
+    return {
+      bottomNav: "timeline"
+    };
   }
 };
 </script>

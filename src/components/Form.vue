@@ -1,5 +1,5 @@
 <template>
-  <v-footer fixed color="transparent" style="height: 50px;">
+  <v-footer fixed color="transparent" style="height: 30px; bottom: 25px;" class="mb-12">
     <v-fab-transition>
       <v-btn color="amber darken-4" @click.stop="dialog = !dialog" dark absolute top right fab>
         <v-icon>mdi-pencil</v-icon>

@@ -1,5 +1,8 @@
 <template>
   <div>
+    <v-btn class="mx-2 d-flex d-sm-none" fab dark fixed small color="transparent" @click="goBack">
+      <v-icon dark color="teal lighten-2">mdi-arrow-left</v-icon>
+    </v-btn>
     <v-card v-if="this.userData" class="mx-auto" max-width="434" tile>
       <v-img height="100%" src="https://cdn.vuetifyjs.com/images/cards/server-room.jpg">
         <v-row align="end" class="fill-height">
@@ -69,6 +72,9 @@ export default {
         .catch(function(error) {
           alert("Error getting documents: " + error);
         });
+    },
+    goBack() {
+      window.history.length > 1 ? this.$router.go(-1) : this.$router.push("/");
     }
     // storage() {
     //   let storageRef = storage.ref();
