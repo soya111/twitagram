@@ -2,7 +2,7 @@
   <v-row justify="center">
     <v-dialog v-model="dialog" persistent max-width="290">
       <template v-slot:activator="{ on }">
-        <v-btn color="teal" dark v-on="on">アカウント削除</v-btn>
+        <v-btn class text tile color="teal" v-on="on">アカウント削除</v-btn>
       </template>
       <v-card>
         <v-card-title class="headline">アカウントを削除しますか?</v-card-title>

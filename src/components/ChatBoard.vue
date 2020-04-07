@@ -82,12 +82,14 @@ export default {
     newDisplayName: ""
   }),
   firestore() {
+    // let collection = db.collection("comments");
     let comments = db.collection("comments").orderBy("createdAt", "desc");
-    // console.log(comments);
+    // console.log(collection);
     return {
       // firestoreのcommentsコレクションを参照
       // comments: db.collection("comments").orderBy("likes")
       comments: comments
+      // collection: collection
     };
   },
   methods: {
@@ -131,6 +133,26 @@ export default {
       //   });
       // console.log("2222");
       // return avatar;
+    },
+    fetchData() {
+      let self = this;
+      let userUid = this.$route.params.uid;
+      db.collection("usersCollection")
+        .doc(userUid)
+        .get()
+        .then(function(doc) {
+          if (doc.exists) {
+            // console.log(self.avatar);
+            // console.log(doc.data());
+            self.userData = doc.data();
+          } else {
+            // doc.data() will be undefined in this case
+            alert("No such document!");
+          }
+        })
+        .catch(function(error) {
+          alert("Error getting documents: " + error);
+        });
     }
   },
   computed: {}

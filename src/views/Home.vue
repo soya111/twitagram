@@ -3,22 +3,24 @@
     <ChatBoard v-show="bottomNav=='timeline'" />
     <MyProfile v-show="bottomNav=='profile'" />
     <ChatForm />
-
     <v-bottom-navigation fixed v-model="bottomNav" grow color="teal">
-      <v-btn value="timeline">
-        <span>タイムライン</span>
-        <v-icon>mdi-chart-timeline-variant</v-icon>
-      </v-btn>
+      <router-link class="link" :to="'/'">
+        <v-btn value="timeline">
+          <span>タイムライン</span>
+          <v-icon>mdi-chart-timeline-variant</v-icon>
+        </v-btn>
+      </router-link>
 
       <!-- <v-btn value="favorites">
         <span>Favorites</span>
         <v-icon>mdi-heart</v-icon>
       </v-btn>-->
-
-      <v-btn value="profile">
-        <span>プロフィール</span>
-        <v-icon>mdi-account</v-icon>
-      </v-btn>
+      <router-link class="link" :to="'/profile'">
+        <v-btn value="profile">
+          <span>プロフィール</span>
+          <v-icon>mdi-account</v-icon>
+        </v-btn>
+      </router-link>
     </v-bottom-navigation>
   </div>
 </template>
@@ -43,3 +45,11 @@ export default {
   }
 };
 </script>
+
+<style scoped>
+.link {
+  display: flex;
+  text-decoration: none;
+  color: teal;
+}
+</style>

@@ -43,9 +43,9 @@
         <v-app-bar-nav-icon @click="drawer = !drawer"></v-app-bar-nav-icon>
         <v-toolbar-title class="font-weight-black">Twitagram</v-toolbar-title>
         <v-spacer></v-spacer>
-        <v-btn icon>
+        <!-- <v-btn icon>
           <v-icon>mdi-magnify</v-icon>
-        </v-btn>
+        </v-btn>-->
         <v-btn icon>
           <v-icon>mdi-dots-vertical</v-icon>
         </v-btn>
@@ -76,7 +76,6 @@ export default {
       { link: "/signin", title: "ログイン", icon: "mdi-account-arrow-left" }
     ],
     currentUser: null,
-    url: "./assets/logo.png",
     user: null,
     uid: ""
   }),
