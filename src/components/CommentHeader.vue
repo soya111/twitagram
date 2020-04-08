@@ -16,6 +16,7 @@
           v-if="user"
           style="max-width: 200px;"
         >{{user.displayName}}</v-list-item-title>
+        <v-list-item-title v-else>Unknown</v-list-item-title>
       </v-list-item-content>
     </router-link>
   </div>

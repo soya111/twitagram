@@ -18,7 +18,13 @@
           </v-toolbar-items>
         </v-toolbar>
         <v-container fluid>
-          <v-textarea prepend-icon="mdi-account" v-model="message" clearable auto-grow></v-textarea>
+          <v-textarea
+            prepend-icon="mdi-account"
+            v-model="message"
+            clearable
+            auto-grow
+            placeholder="投稿内容を入力"
+          ></v-textarea>
         </v-container>
       </v-card>
     </v-dialog>
@@ -53,7 +59,7 @@ export default {
     commentRules: [v => !!v || "コメントは必須項目です"],
     // Formダイアログの表示可否
     show: false,
-    message: "Hey!",
+    message: "",
     dialog: false
   }),
   methods: {

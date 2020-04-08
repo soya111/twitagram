@@ -43,7 +43,7 @@
                     >プロフィール画像変更</v-btn>
                   </v-list-item-title>
                 </v-list-item>
-                <v-list-item>
+                <v-list-item v-if="secretButton">
                   <v-list-item-title>
                     <v-row justify="center">
                       <v-dialog v-model="secretDialog" persistent max-width="290">
