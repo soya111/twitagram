@@ -1,8 +1,11 @@
 import Vue from "vue";
 import VueRouter from "vue-router";
 import Home from "../views/Home.vue";
+import UserPage from "../views/UserPage";
 import Signup from "@/components/Signup.vue";
 import Signin from "@/components/Signin.vue";
+import ChatBoard from "@/components/ChatBoard.vue";
+import MyProfile from "@/components/MyProfile.vue";
 import firebase from "firebase";
 
 Vue.use(VueRouter);
@@ -10,24 +13,43 @@ Vue.use(VueRouter);
 const routes = [
   {
     path: "*",
-    redirect: "/signin"
+    redirect: "/signin",
   },
   {
     path: "/",
     name: "Home",
     component: Home,
-    meta: { requiresAuth: true }
+    meta: { requiresAuth: true },
+    children: [
+      {
+        path: "",
+        name: "Timeline",
+        component: ChatBoard,
+      },
+      {
+        path: "Profile",
+        name: "Profile",
+        component: MyProfile,
+      },
+    ],
+  },
+  {
+    path: "/user/:uid",
+    name: "UserPage",
+    component: UserPage,
+    meta: { requiresAuth: true },
+    props: true,
   },
   {
     path: "/signup",
     name: "Signup",
-    component: Signup
+    component: Signup,
   },
   {
     path: "/signin",
     name: "Signin",
-    component: Signin
-  }
+    component: Signin,
+  },
   // ,
   // {
   //   path: "/about",
@@ -43,30 +65,30 @@ const routes = [
 const router = new VueRouter({
   mode: "history",
   base: process.env.BASE_URL,
-  routes
+  routes,
 });
 
 router.beforeEach((to, from, next) => {
-  const requiresAuth = to.matched.some(record => record.meta.requiresAuth);
+  const requiresAuth = to.matched.some((record) => record.meta.requiresAuth);
   if (requiresAuth) {
-    firebase.auth().onAuthStateChanged(user => {
+    firebase.auth().onAuthStateChanged((user) => {
       if (user) {
         next();
       } else {
         next({
           path: "signin",
-          query: { redirect: to.fullPath }
+          query: { redirect: to.fullPath },
         });
       }
     });
   } else {
-    firebase.auth().onAuthStateChanged(user => {
-      if (user) {
-        next({ path: "/" });
-      } else {
-        next();
-      }
-    });
+    //   firebase.auth().onAuthStateChanged(user => {
+    //     if (user) {
+    //       next({ path: "/" });
+    //     } else {
+    next();
+    //     }
+    //   });
   }
 });
 

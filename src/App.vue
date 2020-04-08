@@ -2,11 +2,12 @@
   <div id="app">
     <!-- App.vue -->
     <v-app>
-      <v-navigation-drawer app v-model="drawer" color="indigo lighten-2" dark>
+      <v-navigation-drawer app v-model="drawer" color="teal accent-4" dark>
         <template v-slot:prepend>
           <v-list-item two-line>
             <v-list-item-avatar>
               <img src="https://randomuser.me/api/portraits/women/81.jpg" />
+              <!-- <img :src="user.photoURL" /> -->
             </v-list-item-avatar>
 
             <v-list-item-content>
@@ -17,7 +18,7 @@
         </template>
         <v-divider></v-divider>
         <v-list nav dense id="nav">
-          <v-list-item-group v-model="group" active-class="deep-purple--text text--accent-4">
+          <v-list-item-group active-class="indigo--text text--accent-4">
             <router-link v-for="item in drawerItems" :key="item.title" :to="item.link">
               <v-list-item>
                 <v-list-item-icon>
@@ -38,13 +39,13 @@
         </template>
       </v-navigation-drawer>
 
-      <v-app-bar app color="indigo" dark>
+      <v-app-bar app color="teal" dark>
         <v-app-bar-nav-icon @click="drawer = !drawer"></v-app-bar-nav-icon>
-        <v-toolbar-title>リアルタイムチャット</v-toolbar-title>
+        <v-toolbar-title class="font-weight-black">Twitagram</v-toolbar-title>
         <v-spacer></v-spacer>
-        <v-btn icon>
+        <!-- <v-btn icon>
           <v-icon>mdi-magnify</v-icon>
-        </v-btn>
+        </v-btn>-->
         <v-btn icon>
           <v-icon>mdi-dots-vertical</v-icon>
         </v-btn>
@@ -64,6 +65,7 @@
 
 <script>
 import firebase from "firebase";
+import { db } from "./plugins/firebase";
 
 export default {
   data: () => ({
@@ -73,14 +75,27 @@ export default {
       { link: "/signup", title: "ユーザー登録", icon: "mdi-account-plus" },
       { link: "/signin", title: "ログイン", icon: "mdi-account-arrow-left" }
     ],
-    currentUser: {
-      photoURL: "https://i.picsum.photos/id/619/200/200.jpg"
-    },
-    url: "./assets/logo.png"
+    currentUser: null,
+    user: null,
+    uid: ""
   }),
   beforeCreate() {
-    this.currentUser = firebase.auth().currentUser;
+    // this.currentUser = firebase.auth().currentUser;
+    // let user = db.collection("usersCollection").doc(this.currentUser.uid);
+    // return {
+    //   user: user
+    // };
     // console.log("App: ", this.currentUser);
+  },
+  firestore() {
+    let currentUser = firebase.auth().currentUser;
+
+    console.log(currentUser.uid);
+    let user = db.collection("usersCollection").doc(this.currentUser.uid);
+    console.log(user);
+    return {
+      user: user
+    };
   }
 };
 </script>

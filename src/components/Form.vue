@@ -1,6 +1,34 @@
 <template>
-  <v-footer fixed color="cyan darken-4">
-    <v-text-field
+  <v-footer fixed color="transparent" style="height: 30px; bottom: 25px;" class="mb-12">
+    <v-fab-transition>
+      <v-btn color="amber darken-4" @click.stop="dialog = !dialog" dark absolute top right fab>
+        <v-icon>mdi-pencil</v-icon>
+      </v-btn>
+    </v-fab-transition>
+    <v-dialog v-model="dialog" fullscreen hide-overlay transition="scroll-y-reverse-transition">
+      <v-card>
+        <v-toolbar flat>
+          <v-btn icon @click="dialog = false">
+            <v-icon>mdi-close</v-icon>
+          </v-btn>
+          <v-toolbar-title>コメント</v-toolbar-title>
+          <v-spacer></v-spacer>
+          <v-toolbar-items>
+            <v-btn text dark color="green" @click="sendMessage">コメントする</v-btn>
+          </v-toolbar-items>
+        </v-toolbar>
+        <v-container fluid>
+          <v-textarea
+            prepend-icon="mdi-account"
+            v-model="message"
+            clearable
+            auto-grow
+            placeholder="投稿内容を入力"
+          ></v-textarea>
+        </v-container>
+      </v-card>
+    </v-dialog>
+    <!-- <v-text-field
       class="mt-1 mb-n5"
       v-model="message"
       :append-outer-icon="message ? 'mdi-send' : 'mdi-microphone'"
@@ -17,7 +45,7 @@
       @click:append-outer="sendMessage"
       @click:prepend="changeIcon"
       @click:clear="clearMessage"
-    ></v-text-field>
+    ></v-text-field>-->
   </v-footer>
 </template>
 
@@ -31,19 +59,8 @@ export default {
     commentRules: [v => !!v || "コメントは必須項目です"],
     // Formダイアログの表示可否
     show: false,
-    message: "Hey!",
-    marker: true,
-    iconIndex: 0,
-    icons: [
-      "mdi-emoticon",
-      "mdi-emoticon-cool",
-      "mdi-emoticon-dead",
-      "mdi-emoticon-excited",
-      "mdi-emoticon-happy",
-      "mdi-emoticon-neutral",
-      "mdi-emoticon-sad",
-      "mdi-emoticon-tongue"
-    ]
+    message: "",
+    dialog: false
   }),
   methods: {
     // コメント追加
@@ -55,30 +72,22 @@ export default {
       db.collection("comments").add({
         tweeterUid: user.uid,
         content: this.message,
-        avatar: user.photoURL,
-        tweeterName: user.displayName,
+        // avatar: user.photoURL,
+        // tweeterName: user.displayName,
         likes: 0,
         createdAt: now
       });
     },
-    toggleMarker() {
-      this.marker = !this.marker;
-    },
     sendMessage() {
+      this.closeDialog();
       this.addComment();
-      this.resetIcon();
       this.clearMessage();
     },
     clearMessage() {
       this.message = "";
     },
-    resetIcon() {
-      this.iconIndex = 0;
-    },
-    changeIcon() {
-      this.iconIndex === this.icons.length - 1
-        ? (this.iconIndex = 0)
-        : this.iconIndex++;
+    closeDialog() {
+      this.dialog = false;
     }
   },
   computed: {
