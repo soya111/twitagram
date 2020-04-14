@@ -16,7 +16,7 @@
           v-if="user"
           style="max-width: 200px;"
         >{{user.displayName}}</v-list-item-title>
-        <v-list-item-title v-else>Unknown</v-list-item-title>
+        <v-list-item-title v-else>...</v-list-item-title>
       </v-list-item-content>
     </router-link>
   </div>
@@ -38,18 +38,6 @@ export default {
     return {
       user: user
     };
-  },
-
-  beforeRouteUpdate(to, from, next) {
-    // `this` を使用
-    // this.user = db.collection("usersCollection").doc($route.params.uid);
-    console.log("beforeRouteUpdate");
-    next();
-  },
-  watch: {
-    $route(to, from) {
-      console.log(to, from);
-    }
   }
 };
 </script>

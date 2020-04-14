@@ -3,8 +3,8 @@
     <v-row justify="center">
       <v-col cols="12" sm="10" md="8" lg="6">
         <v-list v-if="comments" class transition="fade-transition">
-          <template v-for="(comment, index) in comments">
-            <Comment :key="index" :comment="comment" />
+          <template v-for="(comment) in comments">
+            <Comment :key="comment.id" :comment="comment" />
           </template>
           <v-btn loading color="transparent" depressed block height="100"></v-btn>
         </v-list>
@@ -47,32 +47,6 @@ export default {
     };
   },
   methods: {
-    returnAvatar(uid) {
-      // let avatar;
-      db.collection("usersCollection")
-        .doc(uid)
-        .onSnapshot(doc => {
-          // console.log("Current data: ", doc.data());
-          console.log(doc.data().photoURL);
-          return doc.data().photoURL;
-        });
-      //   .get()
-      //   .then(function(doc) {
-      //     if (doc.exists) {
-      //       console.log(doc.data().photoURL, "11111111111111");
-      //       avatar = doc.data().photoURL;
-      //       return doc.data().photoURL;
-      //     } else {
-      //       // doc.data() will be undefined in this case
-      //       alert("No such document!");
-      //     }
-      //   })
-      //   .catch(function(error) {
-      //     console.log("Error getting documents: ", error);
-      //   });
-      // console.log("2222");
-      // return avatar;
-    },
     fetchData() {
       let self = this;
       let userUid = this.$route.params.uid;
@@ -93,7 +67,6 @@ export default {
           alert("Error getting documents: " + error);
         });
     }
-  },
-  computed: {}
+  }
 };
 </script>
