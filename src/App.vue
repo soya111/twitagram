@@ -4,10 +4,10 @@
     <v-app>
       <v-navigation-drawer app v-model="drawer" color="teal accent-4" dark>
         <template v-slot:prepend>
-          <v-list-item two-line>
+          <v-list-item two-line v-if="currentUser">
             <v-list-item-avatar>
-              <img src="https://randomuser.me/api/portraits/women/81.jpg" />
-              <!-- <img :src="user.photoURL" /> -->
+              <img src="https://randomuser.me/api/portraits/men/81.jpg" />
+              <img :src="currentUser.photoURL" />
             </v-list-item-avatar>
 
             <v-list-item-content>
@@ -41,7 +41,10 @@
 
       <v-app-bar app color="teal" dark>
         <v-app-bar-nav-icon @click="drawer = !drawer"></v-app-bar-nav-icon>
-        <v-toolbar-title class="font-weight-black">Twitagram</v-toolbar-title>
+        <router-link :to="'/'" style="display: flex; text-decoration: none; color: #fff;">
+          <v-toolbar-title class="font-weight-black">Twitagram</v-toolbar-title>
+        </router-link>
+
         <v-spacer></v-spacer>
         <!-- <v-btn icon>
           <v-icon>mdi-magnify</v-icon>
