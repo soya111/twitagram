@@ -2,6 +2,7 @@ import Vue from "vue";
 import VueRouter from "vue-router";
 import Home from "../views/Home.vue";
 import UserPage from "../views/UserPage";
+import CommentPage from "../views/CommentPage";
 import Signup from "@/components/Signup.vue";
 import Signin from "@/components/Signin.vue";
 import ChatBoard from "@/components/ChatBoard.vue";
@@ -37,6 +38,13 @@ const routes = [
     path: "/user/:uid",
     name: "UserPage",
     component: UserPage,
+    meta: { requiresAuth: true },
+    props: true,
+  },
+  {
+    path: "/user/:uid/comment/:comment_id",
+    name: "CommentPage",
+    component: CommentPage,
     meta: { requiresAuth: true },
     props: true,
   },

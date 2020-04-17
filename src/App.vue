@@ -95,7 +95,7 @@ export default {
 
     console.log(currentUser.uid);
     let user = db.collection("usersCollection").doc(this.currentUser.uid);
-    console.log(user);
+    console.log("App");
     return {
       user: user
     };

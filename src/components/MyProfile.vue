@@ -120,6 +120,25 @@
         </v-row>
       </v-img>
     </v-card>
+    <v-card class="mx-auto ma-2" max-width="434" tile>
+      <v-card-actions>
+        <v-spacer></v-spacer>
+        <v-btn icon>
+          <v-icon>mdi-heart</v-icon>
+        </v-btn>
+        <v-spacer></v-spacer>
+        <v-btn icon>
+          <v-icon>mdi-bookmark</v-icon>
+        </v-btn>
+        <v-spacer></v-spacer>
+        <v-btn icon>
+          <v-icon>mdi-share-variant</v-icon>
+        </v-btn>
+        <v-spacer></v-spacer>
+      </v-card-actions>
+      <!-- {{my_comments}}
+      {{my_comments_id}}-->
+    </v-card>
     <CommentsList :uid="currentUser.uid" />
     <v-btn loading color="transparent" class="mb-12" depressed block height="100"></v-btn>
   </div>
@@ -152,7 +171,9 @@ export default {
     secretNum: 0,
     secretButton: false,
     secretDialog: false,
-    newPhotoURL: ""
+    newPhotoURL: "",
+    my_comments: [],
+    my_comments_id: []
   }),
 
   methods: {
@@ -258,5 +279,30 @@ export default {
       );
     }
   }
+  // firestore() {
+  //   let user_uid = firebase.auth().currentUser.uid;
+  //   console.log("firestore");
+  //   return {
+  //     my_comments: db.collection("comments").where("tweeterUid", "==", user_uid)
+  //   };
+  // },
+  // watch: {
+  //   my_comments: () => {
+  //     let my_comments_id = this.my_comments.map(comment => comment.id);
+  //     return {
+  //       my_comments_id: my_comments_id
+  //       };
+  //   }
+  // my_comments_id: function() {
+  //   console.log("mycommentsid");
+  //   // let likes_count=0;
+  //   this.my_comments_id.forEach(id => {
+  //     db.collection("likes").where("comment_id", "==", id);
+  //   });
+  //   // return {
+  //   //   likes_count: db.collection("likes").where("comment_id", "==", )
+  //   // }
+  // }
+  // }
 };
 </script>
