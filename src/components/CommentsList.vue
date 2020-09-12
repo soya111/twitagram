@@ -1,7 +1,7 @@
 <template>
   <div class="mt-2">
-    <template v-for="(comment, index) in comments">
-      <Comment :key="index" :comment="comment" />
+    <template v-for="(comment) in comments">
+      <Comment :key="comment.id" :comment="comment" />
     </template>
   </div>
 </template>

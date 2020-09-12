@@ -2,52 +2,60 @@
   <v-card
     v-if="comment"
     class="mx-auto mb-2 chatboard-comment"
-    color="teal accent-4"
+    :color="color"
     dark
+    tile
     max-width="400"
   >
-    <!-- {{likes}} -->
-    <v-card-title class="px-0 py-2">
-      <v-list-item>
-        <CommentHeader :uid="comment.tweeterUid" :key="comment.id" />
+    <router-link
+      :to="'/user/'+ this.comment.tweeterUid + '/comment/' + this.comment.id"
+      style="text-decoration: none;"
+    >
+      <!-- {{likes}} -->
+      <v-card-title class="px-0 py-2">
+        <v-list-item>
+          <CommentHeader :uid="comment.tweeterUid" :key="comment.id" />
 
-        <v-spacer></v-spacer>
+          <v-spacer></v-spacer>
 
-        <v-menu bottom left transition="scroll-x-transition">
-          <template v-slot:activator="{ on }">
-            <v-btn dark icon v-on="on">
-              <v-icon>mdi-dots-vertical</v-icon>
-            </v-btn>
-          </template>
+          <v-menu bottom left transition="scroll-x-transition">
+            <template v-slot:activator="{ on }">
+              <v-btn dark icon v-on="on" disabled>
+                <v-icon>mdi-dots-vertical</v-icon>
+              </v-btn>
+            </template>
 
-          <v-list class="py-0">
-            <v-list-item disabled @click="deleteComment(comment.id)">
-              <v-list-item-title class="subtile-1">削除</v-list-item-title>
-            </v-list-item>
-            <!-- <v-list-item>
+            <v-list class="py-0">
+              <v-list-item disabled @click="deleteComment(comment.id)">
+                <v-list-item-title class="subtile-1">削除</v-list-item-title>
+              </v-list-item>
+              <!-- <v-list-item>
               <v-list-item-title>{{comment.id}}</v-list-item-title>
-            </v-list-item>-->
-          </v-list>
-        </v-menu>
-      </v-list-item>
-    </v-card-title>
+              </v-list-item>-->
+            </v-list>
+          </v-menu>
+        </v-list-item>
+      </v-card-title>
 
-    <v-card-text class="subtitle-1 font-weight-bold mx-2 my-0 py-0">{{comment.content}}</v-card-text>
+      <v-card-text
+        class="subtitle-1 font-weight-bold mx-2 my-0 py-0 teal--text text--lighten-5"
+      >{{comment.content}}</v-card-text>
 
-    <v-card-actions>
-      <v-list-item class="grow">
-        <v-list-item-content>
-          <v-list-item-title
-            class="caption text-no-wrap"
-          >{{ comment.createdAt.toDate().toLocaleString() }}</v-list-item-title>
-        </v-list-item-content>
+      <v-card-actions>
+        <v-list-item class="grow">
+          <v-list-item-content>
+            <v-list-item-title
+              class="caption text-no-wrap"
+            >{{ comment.createdAt.toDate().toLocaleString() }}</v-list-item-title>
+          </v-list-item-content>
 
-        <v-row align="center" justify="end">
-          <v-icon class="mr-1" @click="likeComment()" :color="heartColor">mdi-heart</v-icon>
-          <span class="subheading mr-2" :class="heartCountColor">{{ likes.length }}</span>
-        </v-row>
-      </v-list-item>
-    </v-card-actions>
+          <v-row align="center" justify="end">
+            <v-icon class="mr-1" @click.prevent="likeComment()" :color="heartColor">mdi-heart</v-icon>
+            <span class="subheading mr-2" :class="heartCountColor">{{ likes.length }}</span>
+          </v-row>
+        </v-list-item>
+      </v-card-actions>
+    </router-link>
   </v-card>
 </template>
 
@@ -66,7 +74,8 @@ export default {
     likes: [],
     my_like: [],
     heartColor: "white",
-    heartCountColor: "white--text"
+    heartCountColor: "white--text",
+    color: "teal accent-4"
   }),
   props: ["comment"],
   methods: {
@@ -123,13 +132,24 @@ export default {
       // console.log("created:", this.likes);
       if (isIncludeLike) {
         this.heartColor = "pink";
-        this.heartCountColor = "pink--text text--darken-3";
+        this.heartCountColor = "pink--text";
+      } else {
+        this.heartColor = "white";
+        this.heartCountColor = "white--text";
       }
     }
+    // changeCommentColor() {
+    //   if (this.likes.length >= 2) {
+    //     this.color = "indigo accent-2";
+    //   } else {
+    //     this.color = "teal accent-4";
+    //   }
+    // }
   },
   watch: {
     likes: function() {
       this.changeHeartColor();
+      // this.changeCommentColor();
     }
   },
   firestore() {
