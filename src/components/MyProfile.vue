@@ -6,7 +6,10 @@
       }}
     </v-snackbar>
     <v-card class="mx-auto ma-2" max-width="434" tile>
-      <v-img height="100%" :src="returnRandomImage_c">
+      <v-img
+        height="100%"
+        src="https://cdn.pixabay.com/photo/2017/08/30/01/05/milky-way-2695569_960_720.jpg"
+      >
         <v-row align="end" class="fill-height">
           <v-col align-self="start" class="pa-0" cols="10">
             <v-avatar class="profile" color="grey" size="164" tile>
@@ -138,21 +141,21 @@ export default {
   components: {
     Signout,
     DeleteUser,
-    CommentsList
+    CommentsList,
   },
   data: () => ({
     currentUser: null,
     alert: {
       isDisplay: false,
       type: "",
-      message: ""
+      message: "",
     },
     dialog: false,
     newDisplayName: "",
     secretNum: 0,
     secretButton: false,
     secretDialog: false,
-    newPhotoURL: ""
+    newPhotoURL: "",
   }),
 
   methods: {
@@ -167,27 +170,27 @@ export default {
       let self = this;
       user
         .updateProfile({
-          photoURL: photoURL
+          photoURL: photoURL,
         })
-        .then(function() {
+        .then(function () {
           // Update successful.
           db.collection("usersCollection")
             .doc(user.uid)
             .update({
-              photoURL: photoURL
+              photoURL: photoURL,
             })
             .then(() => {
               self.alert = {
                 isDisplay: true,
                 type: "success",
-                message: "プロフィール画像を変更しました。"
+                message: "プロフィール画像を変更しました。",
               };
             })
-            .catch(error => {
+            .catch((error) => {
               alert(error.message);
             });
         })
-        .catch(function(error) {
+        .catch(function (error) {
           alert("change-image" + error);
         });
     },
@@ -199,9 +202,9 @@ export default {
       let self = this;
       user
         .updateProfile({
-          displayName: newDisplayName
+          displayName: newDisplayName,
         })
-        .then(function() {
+        .then(function () {
           // Update successful.
           db.collection("usersCollection")
             .doc(user.uid)
@@ -210,14 +213,14 @@ export default {
               self.alert = {
                 isDisplay: true,
                 type: "success",
-                message: "ユーザー名を変更しました。"
+                message: "ユーザー名を変更しました。",
               };
             })
-            .catch(error => {
+            .catch((error) => {
               alert("!", error.message);
             });
         })
-        .catch(function(error) {
+        .catch(function (error) {
           alert("change-displayname" + error);
         });
       this.dialog = false;
@@ -243,7 +246,7 @@ export default {
         (Math.floor(Math.random() * 1083) + 1) +
         "/400/400.jpg"
       );
-    }
+    },
   },
   created() {
     this.currentUser = firebase.auth().currentUser;
@@ -256,7 +259,7 @@ export default {
         (Math.floor(Math.random() * 1083) + 1) +
         "/630/280.jpg"
       );
-    }
-  }
+    },
+  },
 };
 </script>
