@@ -120,25 +120,6 @@
         </v-row>
       </v-img>
     </v-card>
-    <v-card class="mx-auto ma-2" max-width="434" tile>
-      <v-card-actions>
-        <v-spacer></v-spacer>
-        <v-btn icon>
-          <v-icon>mdi-heart</v-icon>
-        </v-btn>
-        <v-spacer></v-spacer>
-        <v-btn icon>
-          <v-icon>mdi-bookmark</v-icon>
-        </v-btn>
-        <v-spacer></v-spacer>
-        <v-btn icon>
-          <v-icon>mdi-share-variant</v-icon>
-        </v-btn>
-        <v-spacer></v-spacer>
-      </v-card-actions>
-      <!-- {{my_comments}}
-      {{my_comments_id}}-->
-    </v-card>
     <CommentsList :uid="currentUser.uid" />
     <v-btn loading color="transparent" class="mb-12" depressed block height="100"></v-btn>
   </div>
@@ -157,14 +138,14 @@ export default {
   components: {
     Signout,
     DeleteUser,
-    CommentsList
+    CommentsList,
   },
   data: () => ({
     currentUser: null,
     alert: {
       isDisplay: false,
       type: "",
-      message: ""
+      message: "",
     },
     dialog: false,
     newDisplayName: "",
@@ -173,7 +154,7 @@ export default {
     secretDialog: false,
     newPhotoURL: "",
     my_comments: [],
-    my_comments_id: []
+    my_comments_id: [],
   }),
 
   methods: {
@@ -188,27 +169,27 @@ export default {
       let self = this;
       user
         .updateProfile({
-          photoURL: photoURL
+          photoURL: photoURL,
         })
-        .then(function() {
+        .then(function () {
           // Update successful.
           db.collection("usersCollection")
             .doc(user.uid)
             .update({
-              photoURL: photoURL
+              photoURL: photoURL,
             })
             .then(() => {
               self.alert = {
                 isDisplay: true,
                 type: "success",
-                message: "プロフィール画像を変更しました。"
+                message: "プロフィール画像を変更しました。",
               };
             })
-            .catch(error => {
+            .catch((error) => {
               alert(error.message);
             });
         })
-        .catch(function(error) {
+        .catch(function (error) {
           alert("change-image" + error);
         });
     },
@@ -220,9 +201,9 @@ export default {
       let self = this;
       user
         .updateProfile({
-          displayName: newDisplayName
+          displayName: newDisplayName,
         })
-        .then(function() {
+        .then(function () {
           // Update successful.
           db.collection("usersCollection")
             .doc(user.uid)
@@ -231,14 +212,14 @@ export default {
               self.alert = {
                 isDisplay: true,
                 type: "success",
-                message: "ユーザー名を変更しました。"
+                message: "ユーザー名を変更しました。",
               };
             })
-            .catch(error => {
+            .catch((error) => {
               alert("!", error.message);
             });
         })
-        .catch(function(error) {
+        .catch(function (error) {
           alert("change-displayname" + error);
         });
       this.dialog = false;
@@ -264,7 +245,7 @@ export default {
         (Math.floor(Math.random() * 1083) + 1) +
         "/400/400.jpg"
       );
-    }
+    },
   },
   created() {
     this.currentUser = firebase.auth().currentUser;
@@ -277,8 +258,8 @@ export default {
         (Math.floor(Math.random() * 1083) + 1) +
         "/630/280.jpg"
       );
-    }
-  }
+    },
+  },
   // firestore() {
   //   let user_uid = firebase.auth().currentUser.uid;
   //   console.log("firestore");
